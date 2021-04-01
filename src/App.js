@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./components/Home";
+import FinishSignUp from "./components/FinishSignUp";
 import "./App.css";
 
-const USER_DETAILS = {
-  user: "yaky",
-  email: "asd@asd.sd",
-};
-
 function App() {
-  useEffect(() => {
-    // Update the document title using the browser API
-    console.log("uuuu");
-  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h5>Yo Roey! x</h5>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header> header </header>
+        <Switch>
+          <Route path="/finishSignUp">
+            <FinishSignUp />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
