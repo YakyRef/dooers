@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import firebase from "./firebase";
 import Home from "./components/Home";
 import FinishSignUp from "./components/FinishSignUp";
 import "./App.css";
-const USER_DETAILS = {
-  email: "yaky.refael@yahoo.com",
-  password: "abc123",
-};
+import LogIn from "./components/LogIn";
 
 function App() {
   useEffect(() => {
@@ -15,24 +12,20 @@ function App() {
       console.log(user);
     });
   });
+
   return (
     <Router>
       <div className="App">
-        <header> header </header>
-        <button
-          onClick={() =>
-            firebase.signInWithEmailAndPass(
-              USER_DETAILS.email,
-              USER_DETAILS.password
-            )
-          }
-        >
-          Sign In
-        </button>
-        <button onClick={() => firebase.signOut()}>Sign Out</button>
+        <nav>
+          <Link to="/login">Login</Link>&nbsp;|
+          <button onClick={() => firebase.logout()}>Log Out</button>
+        </nav>
         <Switch>
           <Route path="/finishSignUp">
             <FinishSignUp />
+          </Route>
+          <Route path="/login">
+            <LogIn />
           </Route>
           <Route path="/">
             <Home />

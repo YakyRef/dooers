@@ -13,8 +13,8 @@ class Firebase {
     return await this.auth.onAuthStateChanged();
   }
 
-  signOut() {
-    return this.auth.signOut();
+  async logout() {
+    await this.auth.signOut();
   }
 
   async signInWithEmailAndPass(email, password) {
