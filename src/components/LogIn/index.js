@@ -5,17 +5,21 @@ const USER_DETAILS = {
   password: "abc123",
 };
 
-function LogIn() {
+function LogIn(props) {
+ 
+  function loginClickHandler(){
+    firebase.signInWithEmailAndPass(
+      USER_DETAILS.email,
+      USER_DETAILS.password
+    ).then(()=>{
+      props.history.push('/')
+    })
+  }
   return (
     <div>
       <h4>LogIn</h4>
       <button
-        onClick={() =>
-          firebase.signInWithEmailAndPass(
-            USER_DETAILS.email,
-            USER_DETAILS.password
-          )
-        }
+        onClick={loginClickHandler}
       >
         log-in
       </button>{" "}

@@ -21,15 +21,10 @@ function App() {
           <button onClick={() => firebase.logout()}>Log Out</button>
         </nav>
         <Switch>
-          <Route path="/finishSignUp">
-            <FinishSignUp />
-          </Route>
-          <Route path="/login">
-            <LogIn />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          <Route path="/finishSignUp" component={FinishSignUp} />        
+          <Route path="/login" component={LogIn} />
+          <Route exact path="/" component={Home}  />
+         
         </Switch>
       </div>
     </Router>
