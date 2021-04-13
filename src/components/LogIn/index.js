@@ -15,6 +15,7 @@ function LogIn(props) {
       props.history.push('/')
     })
   }
+  
   return (
     <div>
       <h4>LogIn</h4>

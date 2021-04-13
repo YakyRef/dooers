@@ -1,6 +1,9 @@
 import React from "react";
+import useAuth from "../../firebase/useAuth";
 
 function Home() {
-  return <div>home</div>;
+  const user = useAuth();
+  console.log("---", user);
+  return <div>Upload files </div>;
 }
 export default Home;
