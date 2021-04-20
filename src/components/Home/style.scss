@@ -1,0 +1,21 @@
+.home {
+  min-height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 10% 0 0 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  #uploader {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50%;
+  }
+  #fileButton {
+    margin-top: 3%;
+  }
+  &__error {
+    color: red;
+  }
+}
