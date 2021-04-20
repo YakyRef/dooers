@@ -8,7 +8,6 @@ function Home(props) {
   if (!user) {
     props.history.push("/login");
   }
-  // create 2 refs
   const fileButtonEl = useRef(null);
   const progressBarEl = useRef(null);
   // create event listener to "fileButton

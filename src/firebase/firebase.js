@@ -61,6 +61,9 @@ class Firebase {
         .then((result) => {
           console.log("res", result);
           window.localStorage.removeItem("emailForSignIn");
+          if (result.user) {
+            window.location.href = "/";
+          }
         })
         .catch((error) => {
           console.log(error.code);
