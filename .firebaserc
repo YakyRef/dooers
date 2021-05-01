@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "dooers-dev"
+    "staging": "ytpl-dev",
+    "default": "ytpl-dev"
   }
 }

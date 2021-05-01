@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import firebase, { FirebaseContext } from "../../firebase/";
-const USER_DETAILS = {
-  email: "yaky.refael@yahoo.com",
-  password: "abc123",
-};
 
 function LogIn(props) {
   const { user } = useContext(FirebaseContext);
@@ -16,14 +12,13 @@ function LogIn(props) {
 
   function loginClickHandler() {
     firebase
-      .signInWithEmail(USER_DETAILS.email)
+      .signInWithEmail(email)
       .then(() => alert("Please check your email"))
       .catch((error) => console.log(error));
   }
 
   function handleEmailChange(e) {
     setEmail(e.target.value);
-    console.log(e.target.value);
   }
 
   return (
@@ -32,7 +27,7 @@ function LogIn(props) {
         name="username"
         value={email}
         onChange={handleEmailChange}
-        placeholder="Please enter your name"
+        placeholder="Please enter your email"
       />
       <button onClick={loginClickHandler}>log-in</button>{" "}
     </div>
