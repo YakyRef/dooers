@@ -7,7 +7,6 @@ function useAuth() {
     const unsubscribe = firebase.auth.onAuthStateChanged((user) => {
       if (user) {
         setAuthUser(user);
-        console.log("---", user);
       } else {
         setAuthUser(null);
       }

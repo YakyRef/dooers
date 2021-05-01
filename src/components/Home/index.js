@@ -1,10 +1,12 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { FirebaseContext } from "../../firebase";
 import "./style.scss";
 function Home(props) {
   const [error, setError] = useState(false);
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const { user, firebase } = useContext(FirebaseContext);
+
   if (!user) {
     props.history.push("/login");
   }
@@ -60,6 +62,9 @@ function Home(props) {
         <div className="home__completed">Upload Completed</div>
       )}
       <input type="file" id="fileButton" ref={fileButtonEl} />
+      <div>
+        <Link to="/admin">Go to Admin</Link>
+      </div>
     </div>
   );
 }

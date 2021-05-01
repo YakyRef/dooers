@@ -19,6 +19,10 @@ class Firebase {
     await this.auth.signOut();
   }
 
+  userIdToken() {
+    return this.auth.currentUser.getIdToken(true);
+  }
+
   async signInWithEmailAndPass(email, password) {
     return await this.auth
       .signInWithEmailAndPassword(email, password)

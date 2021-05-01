@@ -4,6 +4,7 @@ import firebase, { FirebaseContext } from "./firebase";
 import Home from "./components/Home";
 import FinishSignUp from "./components/FinishSignUp";
 import LogIn from "./components/LogIn";
+import Admin from "./components/Admin";
 import useAuth from "./firebase/useAuth";
 import "./App.css";
 
@@ -27,6 +28,7 @@ function App() {
           <Switch>
             <Route path="/finishSignUp" component={FinishSignUp} />
             <Route path="/login" component={LogIn} />
+            <Route path="/admin" component={Admin} />
             <Route exact path="/" component={Home} />
           </Switch>
         </div>
