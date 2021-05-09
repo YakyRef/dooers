@@ -9,8 +9,9 @@ class Firebase {
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
     this.storage = app.storage();
+    this.db = app.firestore();
   }
-
+  // Auth methods.
   async isSignedIn() {
     return await this.auth.onAuthStateChanged();
   }
@@ -19,6 +20,9 @@ class Firebase {
     await this.auth.signOut();
   }
 
+  getUserUid() {
+    return this.auth.currentUser.uid;
+  }
   userIdToken() {
     return this.auth.currentUser.getIdToken(true);
   }
@@ -74,9 +78,13 @@ class Firebase {
         });
     }
   }
-
+  // Storage methods.
   createStorageFileReference(path, filename) {
     return this.storage.ref(`${path}/${filename}`);
+  }
+  // Firestore methods.
+  async getAdminUsers() {
+    return await this.firestore.collection("appConfig").get();
   }
 }
 const firebase = new Firebase();
