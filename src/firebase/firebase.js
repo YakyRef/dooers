@@ -83,9 +83,9 @@ class Firebase {
     return this.storage.ref(`${path}/${filename}`);
   }
   // Firestore methods.
-  async getAdminUsers() {
-    return await this.firestore.collection("appConfig").get();
-  }
+  // async getAdminUsers() {
+  //   return await
+  // }
 }
 const firebase = new Firebase();
 export default firebase;
