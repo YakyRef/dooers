@@ -44,7 +44,7 @@ class Firebase {
 
   async signInWithEmail(email) {
     const actionCodeSettings = {
-      url: "http://localhost:3000/finishSignUp?cartId=1234",
+      url: "http://localhost:3000/finishSignUp",
       handleCodeInApp: true,
     };
     return await this.auth

@@ -3,6 +3,7 @@ import firebase, { FirebaseContext } from "../../firebase/";
 
 function Admin(props) {
   const [admin, setAdmin] = useState(false);
+  const [email, setEmail] = useState("");
   const { user } = useContext(FirebaseContext);
   useEffect(() => {
     if (user) {
@@ -30,7 +31,30 @@ function Admin(props) {
         console.log("Error getting document:", error);
       });
   }
+  function loginClickHandler() {
+    firebase
+      .signInWithEmail(email)
+      .then(() => alert("Please check your email"))
+      .catch((error) => console.log(error));
+  }
 
-  return user && admin ? <div>user</div> : <div>no</div>;
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  return user && admin ? (
+    <div>
+      <br />
+      <input
+        name="username"
+        value={email}
+        onChange={handleEmailChange}
+        placeholder="Please enter dooer email"
+      />
+      <button onClick={loginClickHandler}>log-in</button>{" "}
+    </div>
+  ) : (
+    <div>-</div>
+  );
 }
 export default Admin;

@@ -1,12 +1,13 @@
 .home {
   min-height: 100%;
   width: 100%;
+  max-width: 500px;
   padding: 0;
-  margin: 10% 0 0 0;
-  align-items: center;
+  margin: 10% auto 0 auto;
   justify-content: center;
   flex-direction: column;
   display: flex;
+  text-align: left;
   #uploader {
     -webkit-appearance: none;
     appearance: none;

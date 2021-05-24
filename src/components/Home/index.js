@@ -60,13 +60,12 @@ function Home(props) {
       <progress min={0} max={100} id="uploader" value={0} ref={progressBarEl}>
         0%
       </progress>
-      {error && <div className="home__error">error : askjdasl lkasd lkads</div>}
+      {error && <div className="home__error">error : {error}</div>}
       {uploadCompleted && !error && (
         <div className="home__completed">Upload Completed</div>
       )}
 
       <label>
-        Select Files
         <input
           id="fileButton"
           ref={fileButtonEl}
@@ -77,9 +76,6 @@ function Home(props) {
       </label>
       <br />
       <button onClick={onUploadSubmission}>Upload</button>
-      <div>
-        <Link to="/admin">Go to Admin</Link>
-      </div>
     </div>
   );
 }
