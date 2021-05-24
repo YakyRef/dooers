@@ -44,7 +44,7 @@ class Firebase {
 
   async signInWithEmail(email) {
     const actionCodeSettings = {
-      url: "http://localhost:3000/finishSignUp",
+      url: "https://ytpl-dev.firebaseapp.com/finishSignUp",
       handleCodeInApp: true,
     };
     return await this.auth
