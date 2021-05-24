@@ -80,7 +80,13 @@ class Firebase {
   }
   // Storage methods.
   createStorageFileReference(path, filename) {
-    return this.storage.ref(`${path}/${filename}`);
+    return this.storage.ref().child(`${path}/${filename}`);
+  }
+  STATE_CHANGED() {
+    return this.storage.TaskEvent.STATE_CHANGED;
+  }
+  RUNNING() {
+    return this.storage.TaskState.RUNNING;
   }
   // Firestore methods.
   // async getAdminUsers() {
