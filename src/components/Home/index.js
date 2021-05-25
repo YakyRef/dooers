@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
 import "./style.scss";
 function Home(props) {
@@ -7,9 +7,6 @@ function Home(props) {
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const { user, firebase } = useContext(FirebaseContext);
 
-  if (!user) {
-    props.history.push("/sorry");
-  }
   const fileButtonEl = useRef(null);
   const progressBarEl = useRef(null);
 
@@ -53,7 +50,7 @@ function Home(props) {
     setUploadCompleted(true);
   };
 
-  return (
+  return user ? (
     <div className="home">
       <h3>Upload files</h3>
       <progress min={0} max={100} id="uploader" value={0} ref={progressBarEl}>
@@ -76,6 +73,8 @@ function Home(props) {
       <br />
       <button onClick={onUploadSubmission}>Upload</button>
     </div>
+  ) : (
+    <div>sorry</div>
   );
 }
 export default Home;

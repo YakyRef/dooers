@@ -69,7 +69,8 @@ function Admin(props) {
         onChange={handleEmailChange}
         placeholder="Please enter dooer email"
       />
-      <button onClick={loginClickHandler}>log-in</button>{" "}
+      &nbsp;&nbsp;
+      <button onClick={loginClickHandler}>Send email invitation</button>
     </div>
   ) : (
     <div>
