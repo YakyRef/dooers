@@ -5,14 +5,15 @@ function Admin(props) {
   const [admin, setAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const { user } = useContext(FirebaseContext);
+
   useEffect(() => {
     if (user) {
       getConfig();
     }
-  }, [user]);
+  }, [user, admin]);
 
-  function getConfig() {
-    firebase.db
+  async function getConfig() {
+    await firebase.db
       .collection("appConfig")
       .doc("admins")
       .get()
@@ -22,9 +23,9 @@ function Admin(props) {
           const currentUserUid = firebase.getUserUid();
           if (admins?.length && admins.includes(currentUserUid)) {
             setAdmin(true);
+          } else {
+            props.history.push("/sorry");
           }
-        } else {
-          props.history.push("/login");
         }
       })
       .catch((error) => {
@@ -41,6 +42,23 @@ function Admin(props) {
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
+  function providerLogInHandler() {
+    firebase
+      .signInWithGoogle()
+      .then((result) => {
+        // var user = result.user;
+        // getConfig();
+        // if (!admin) {
+        //   props.history.push("/sorry");
+        // }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(`${errorCode}, ${errorMessage}`);
+      });
+  }
 
   return user && admin ? (
     <div>
@@ -54,7 +72,9 @@ function Admin(props) {
       <button onClick={loginClickHandler}>log-in</button>{" "}
     </div>
   ) : (
-    <div>-</div>
+    <div>
+      <button onClick={providerLogInHandler}>Log In</button>
+    </div>
   );
 }
 export default Admin;

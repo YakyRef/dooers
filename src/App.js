@@ -1,9 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import firebase, { FirebaseContext } from "./firebase";
 import Home from "./components/Home";
 import FinishSignUp from "./components/FinishSignUp";
-import LogIn from "./components/LogIn";
+import Sorry from "./components/Sorry";
 import Admin from "./components/Admin";
 import useAuth from "./firebase/useAuth";
 import "./App.css";
@@ -21,13 +21,11 @@ function App() {
                 |&nbsp;
                 <span>Hello {user.displayname || user.email}</span>
               </>
-            ) : (
-              <Link to="/login">Login</Link>
-            )}
+            ) : null}
           </nav>
           <Switch>
             <Route path="/finishSignUp" component={FinishSignUp} />
-            <Route path="/login" component={LogIn} />
+            <Route path="/sorry" component={Sorry} />
             <Route path="/admin" component={Admin} />
             <Route exact path="/" component={Home} />
           </Switch>

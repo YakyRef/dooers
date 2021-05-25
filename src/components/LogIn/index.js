@@ -23,7 +23,7 @@ function LogIn(props) {
 
   return (
     <div>
-      2
+      4
       <input
         name="username"
         value={email}

@@ -1,5 +1,4 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useRef, useState } from "react";
 import { FirebaseContext } from "../../firebase";
 import "./style.scss";
 function Home(props) {
@@ -9,7 +8,7 @@ function Home(props) {
   const { user, firebase } = useContext(FirebaseContext);
 
   if (!user) {
-    props.history.push("/login");
+    props.history.push("/sorry");
   }
   const fileButtonEl = useRef(null);
   const progressBarEl = useRef(null);

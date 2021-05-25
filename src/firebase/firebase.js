@@ -7,6 +7,8 @@ import firebaseConfig from "./config";
 class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
+    this.provider = null;
+    // this.provider = new app.auth.GoogleAuthProvider();
     this.auth = app.auth();
     this.storage = app.storage();
     this.db = app.firestore();
@@ -41,10 +43,18 @@ class Firebase {
         // var errorMessage = error.message;
       });
   }
+  signInWithGoogle() {
+    this.provider = new app.auth.GoogleAuthProvider();
+    return this.signInWithProvider(this.provider);
+  }
+
+  async signInWithProvider(provider) {
+    return await this.auth.signInWithPopup(provider);
+  }
 
   async signInWithEmail(email) {
     const actionCodeSettings = {
-      url: "https://ytpl-dev.web.app/finishSignUp",
+      url: "https://team-dooers.web.app/finishSignUp",
       handleCodeInApp: true,
     };
     return await this.auth
