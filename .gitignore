@@ -1,4 +1,15 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.firebaserc
+database.rules.json
+firestore.rules
+storage.rules
+remoteconfig.template.json
+firestore.indexes.json
+firebase.json
+.firebaserc
 
 # dependencies
 /node_modules
@@ -24,10 +35,4 @@ src/firebase/config.js
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.firebaserc
-database.rules.json
-firestore.rules
-storage.rules
+

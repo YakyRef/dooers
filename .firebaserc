@@ -1,6 +1,6 @@
 {
   "projects": {
-    "staging": "ytpl-dev",
-    "default": "ytpl-dev"
+    "staging": "outstand",
+    "default": "outstand"
   }
 }
