@@ -1,8 +1,8 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { FirebaseContext } from "../../firebase";
 import "./style.scss";
 function Home(props) {
-  const [error, setError] = useState(false);
+  const [errors, setErrors] = useState([]);
   const [files, setFiles] = useState([]);
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const { user, firebase } = useContext(FirebaseContext);
@@ -11,11 +11,17 @@ function Home(props) {
   const progressBarEl = useRef(null);
 
   const onFileChange = (e) => {
+    setErrors([]);
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];
-      newFile["id"] = Math.random();
-      // add an "id" property to each File object
-      setFiles((prevState) => [...prevState, newFile]);
+      if (newFile.size > 4000000) {
+        setErrors([
+          `the size of the image: '${newFile.name}' is more than the maximum. the maximum file size is 4mb`,
+        ]);
+      } else {
+        newFile["id"] = Math.random();
+        setFiles((prevState) => [...prevState, newFile]);
+      }
     }
   };
 
@@ -44,7 +50,7 @@ function Home(props) {
     progressBarEl.current.value = percentage;
   };
   const onUploadProgressError = (error) => {
-    setError(error);
+    setErrors([error]);
   };
   const onUploadFileComplete = () => {
     setUploadCompleted(true);
@@ -56,11 +62,17 @@ function Home(props) {
       <progress min={0} max={100} id="uploader" value={0} ref={progressBarEl}>
         0%
       </progress>
-      {error && <div className="home__error">error : {error}</div>}
-      {uploadCompleted && !error && (
+
+      {errors.length &&
+        errors.map((error, i) => (
+          <div key={i} className="home__error">
+            {error}
+          </div>
+        ))}
+
+      {uploadCompleted && !errors.length && (
         <div className="home__completed">Upload Completed</div>
       )}
-
       <label>
         <input
           id="fileButton"
@@ -71,7 +83,12 @@ function Home(props) {
         />
       </label>
       <br />
-      <button onClick={onUploadSubmission}>Upload</button>
+      <button
+        onClick={onUploadSubmission}
+        disabled={errors.length || files.length < 1}
+      >
+        Upload
+      </button>
     </div>
   ) : (
     <div>sorry</div>
