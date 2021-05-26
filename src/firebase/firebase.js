@@ -54,7 +54,7 @@ class Firebase {
 
   async signInWithEmail(email) {
     const actionCodeSettings = {
-      url: "https://team-dooers.web.app/finishSignUp",
+      url: "https://outstand.web.app/finishSignUp",
       handleCodeInApp: true,
     };
     return await this.auth
