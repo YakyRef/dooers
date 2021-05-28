@@ -4,6 +4,7 @@ import firebase, { FirebaseContext } from "../../firebase/";
 function Admin(props) {
   const [admin, setAdmin] = useState(false);
   const [email, setEmail] = useState("");
+  const [invitedUsers, setInvitedUsers] = useState({});
   const { user } = useContext(FirebaseContext);
 
   useEffect(() => {
@@ -24,17 +25,19 @@ function Admin(props) {
         if (isAdmin) {
           setAdmin(true);
         } else {
-          props.history.push("/sorry");
+          logOut();
         }
       })
       .catch((error) => {
-        props.history.push("/sorry");
+        logOut();
       });
   }
   function loginClickHandler() {
     firebase
       .signInWithEmail(email)
-      .then(() => alert("Please check your email"))
+      .then(() =>
+        setInvitedUsers((prevState) => ({ ...prevState, [email]: true }))
+      )
       .catch((error) => console.log(error));
   }
 
@@ -42,23 +45,14 @@ function Admin(props) {
     setEmail(e.target.value);
   }
   function providerLogInHandler() {
-    firebase
-      .signInWithGoogle()
-      .then((result) => {
-        // var user = result.user;
-        // getConfig();
-        // if (!admin) {
-        //   props.history.push("/sorry");
-        // }
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(`${errorCode}, ${errorMessage}`);
-      });
+    firebase.signInWithGoogle().catch((error) => {
+      console.log(error);
+    });
   }
-
+  function logOut() {
+    firebase.logout();
+    props.history.push("/sorry");
+  }
   return user && admin ? (
     <div>
       <br />
@@ -70,6 +64,8 @@ function Admin(props) {
       />
       &nbsp;&nbsp;
       <button onClick={loginClickHandler}>Send email invitation</button>
+      {Object.keys(invitedUsers).length &&
+        Object.keys(invitedUsers).map((user) => <div>{user}</div>)}
     </div>
   ) : (
     <div>
