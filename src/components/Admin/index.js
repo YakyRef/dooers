@@ -8,28 +8,26 @@ function Admin(props) {
 
   useEffect(() => {
     if (user) {
-      getConfig();
+      checkIfAdmin();
     }
   }, [user, admin]);
 
-  async function getConfig() {
-    await firebase.db
-      .collection("appConfig")
-      .doc("admins")
+  async function checkIfAdmin() {
+    const currentUserUid = await firebase.getUserUid();
+    const docRef = await firebase.db
+      .collection("administrators")
+      .doc(currentUserUid);
+    docRef
       .get()
       .then((doc) => {
-        if (doc.exists) {
-          const admins = doc.data()?.uuids;
-          const currentUserUid = firebase.getUserUid();
-          if (admins?.length && admins.includes(currentUserUid)) {
-            setAdmin(true);
-          } else {
-            props.history.push("/sorry");
-          }
+        const isAdmin = doc.data()?.isAdmin;
+        if (isAdmin) {
+          setAdmin(true);
+        } else {
+          props.history.push("/sorry");
         }
       })
       .catch((error) => {
-        firebase.logout();
         props.history.push("/sorry");
       });
   }
