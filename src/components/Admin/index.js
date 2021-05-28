@@ -29,7 +29,8 @@ function Admin(props) {
         }
       })
       .catch((error) => {
-        console.log("Error getting document:", error);
+        firebase.logout();
+        props.history.push("/sorry");
       });
   }
   function loginClickHandler() {
