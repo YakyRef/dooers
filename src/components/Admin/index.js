@@ -4,12 +4,17 @@ import firebase, { FirebaseContext } from "../../firebase/";
 function Admin(props) {
   const [admin, setAdmin] = useState(false);
   const [email, setEmail] = useState("");
+  const [campaign, setCampaignName] = useState("");
+  const [campaigns, updateCampaigns] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState({});
   const { user } = useContext(FirebaseContext);
 
   useEffect(() => {
     if (user) {
       checkIfAdmin();
+    }
+    if (admin) {
+      getCampaignsFromDb();
     }
   }, [user, admin]);
 
@@ -32,7 +37,7 @@ function Admin(props) {
         logOut();
       });
   }
-  function loginClickHandler() {
+  function inviteUsers() {
     firebase
       .signInWithEmail(email)
       .then(() =>
@@ -53,6 +58,45 @@ function Admin(props) {
     firebase.logout();
     props.history.push("/sorry");
   }
+  function handleCampaignChange(e) {
+    setCampaignName(e.target.value);
+  }
+
+  function getCampaignsFromDb() {
+    let campaignsSet = [];
+    firebase.db
+      .collection("campaigns")
+      .orderBy("start")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          campaignsSet.push(doc.id);
+        });
+        updateCampaigns(campaignsSet);
+      })
+      .then(() => {
+        setCampaignName(campaignsSet[campaignsSet.length - 1]);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }
+  function setCampaign() {
+    // add new document
+    firebase.db
+      .collection("campaigns")
+      .doc(campaign)
+      .set({
+        start: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        alert("Campaign was set");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+    // update all campaigns woth new 'current'=false
+  }
   return user && admin ? (
     <div>
       <br />
@@ -63,9 +107,21 @@ function Admin(props) {
         placeholder="Please enter dooer email"
       />
       &nbsp;&nbsp;
-      <button onClick={loginClickHandler}>Send email invitation</button>
-      {Object.keys(invitedUsers).length &&
-        Object.keys(invitedUsers).map((user) => <div>{user}</div>)}
+      <button onClick={inviteUsers}>Send email invitation</button>
+      {Object.keys(invitedUsers).length
+        ? Object.keys(invitedUsers).map((user) => <div key={user}>{user}</div>)
+        : null}
+      <br />
+      <br />
+      <label htmlFor="campaign">Current campaign name: </label>
+      <input
+        name="campaign"
+        value={campaign}
+        onChange={handleCampaignChange}
+        placeholder="Canpain name"
+      />
+      &nbsp;&nbsp;
+      <button onClick={setCampaign}>Update</button>
     </div>
   ) : (
     <div>

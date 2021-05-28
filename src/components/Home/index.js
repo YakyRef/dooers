@@ -1,14 +1,21 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
 import "./style.scss";
 function Home(props) {
   const [errors, setErrors] = useState([]);
   const [files, setFiles] = useState([]);
+  const [campaigns, updateCampaigns] = useState([]);
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const { user, firebase } = useContext(FirebaseContext);
 
   const fileButtonEl = useRef(null);
   const progressBarEl = useRef(null);
+
+  useEffect(() => {
+    if (user) {
+      getCampaignsFromDb();
+    }
+  }, [user]);
 
   const onFileChange = (e) => {
     setErrors([]);
@@ -30,7 +37,10 @@ function Home(props) {
     const promises = [];
     files.forEach((file) => {
       const uploadTask = firebase
-        .createStorageFileReference("campaign", file.name)
+        .createStorageFileReference(
+          campaigns.length ? campaigns[campaigns.length - 1] : "base-campaign",
+          file.name
+        )
         .put(file);
       promises.push(uploadTask);
       uploadTask.on(
@@ -55,7 +65,22 @@ function Home(props) {
   const onUploadFileComplete = () => {
     setUploadCompleted(true);
   };
-
+  function getCampaignsFromDb() {
+    let campaignsSet = [];
+    firebase.db
+      .collection("campaigns")
+      .orderBy("start")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          campaignsSet.push(doc.id);
+        });
+        updateCampaigns(campaignsSet);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }
   return user ? (
     <div className="home">
       <h3>Upload files</h3>

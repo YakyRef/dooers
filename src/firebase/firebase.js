@@ -12,6 +12,7 @@ class Firebase {
     this.auth = app.auth();
     this.storage = app.storage();
     this.db = app.firestore();
+    this.firestore = app.firestore;
   }
   // Auth methods.
   async isSignedIn() {
