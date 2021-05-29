@@ -82,7 +82,6 @@ function Admin(props) {
       });
   }
   function setCampaign() {
-    // add new document
     firebase.db
       .collection("campaigns")
       .doc(campaign)
@@ -95,7 +94,6 @@ function Admin(props) {
       .catch((error) => {
         console.error("Error writing document: ", error);
       });
-    // update all campaigns woth new 'current'=false
   }
   return user && admin ? (
     <div>

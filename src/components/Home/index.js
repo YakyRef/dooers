@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
+import { logSuccessToDb } from "./helpers";
 import "./style.scss";
 function Home(props) {
   const [errors, setErrors] = useState([]);
@@ -32,7 +33,7 @@ function Home(props) {
     }
   };
 
-  const onUploadSubmission = (e) => {
+  const onUploadClick = (e) => {
     e.preventDefault(); // prevent page refreshing
     const promises = [];
     files.forEach((file) => {
@@ -43,15 +44,13 @@ function Home(props) {
         )
         .put(file);
       promises.push(uploadTask);
-      uploadTask.on(
-        "state_change",
-        updateProgress,
-        onUploadProgressError,
-        onUploadFileComplete
-      );
+      uploadTask.on("state_change", updateProgress, onUploadProgressError);
     });
     Promise.all(promises)
-      .then(() => alert("All files uploaded"))
+      .then((res) => {
+        alert("All files uploaded");
+        onUploadFilesComplete();
+      })
       .catch((err) => console.log(err.code));
   };
 
@@ -62,7 +61,9 @@ function Home(props) {
   const onUploadProgressError = (error) => {
     setErrors([error]);
   };
-  const onUploadFileComplete = () => {
+  const onUploadFilesComplete = () => {
+    logSuccessToDb(user.email || "unknown", files);
+    setFiles([]);
     setUploadCompleted(true);
   };
   function getCampaignsFromDb() {
@@ -109,7 +110,7 @@ function Home(props) {
       </label>
       <br />
       <button
-        onClick={onUploadSubmission}
+        onClick={onUploadClick}
         disabled={errors.length || files.length < 1}
       >
         Upload
