@@ -1,4 +1,21 @@
-import firebase from "../../firebase";
+import firebase from ".";
+
+export const getCampaignsFromDb = async () => {
+  let campaignsSet = [];
+  await firebase.db
+    .collection("campaigns")
+    .orderBy("start")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        campaignsSet.push(doc.id);
+      });
+    })
+    .catch((error) => {
+      console.log("Error getting documents: ", error);
+    });
+  return campaignsSet;
+};
 
 export const logSuccessToDb = async (userEmail, files, campaign) => {
   const fileNames = files.map((file) => file.name);

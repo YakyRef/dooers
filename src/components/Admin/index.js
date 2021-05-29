@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import firebase, { FirebaseContext } from "../../firebase/";
+import { getCampaignsFromDb } from "../../firebase/helpers";
 
 function Admin(props) {
   const [admin, setAdmin] = useState(false);
@@ -11,32 +12,18 @@ function Admin(props) {
 
   useEffect(() => {
     if (user) {
-      checkIfAdmin();
+      const isAdmin = firebase.userIsAdmin();
+      if (isAdmin) {
+        setAdmin(true);
+      } else {
+        logOut();
+      }
     }
     if (admin) {
-      getCampaignsFromDb();
+      getCampaigns();
     }
   }, [user, admin]);
 
-  async function checkIfAdmin() {
-    const currentUserUid = await firebase.getUserUid();
-    const docRef = await firebase.db
-      .collection("administrators")
-      .doc(currentUserUid);
-    docRef
-      .get()
-      .then((doc) => {
-        const isAdmin = doc.data()?.isAdmin;
-        if (isAdmin) {
-          setAdmin(true);
-        } else {
-          logOut();
-        }
-      })
-      .catch((error) => {
-        logOut();
-      });
-  }
   function inviteUsers() {
     firebase
       .signInWithEmail(email)
@@ -61,29 +48,15 @@ function Admin(props) {
   function handleCampaignChange(e) {
     setCampaignName(e.target.value);
   }
-
-  function getCampaignsFromDb() {
-    let campaignsSet = [];
-    firebase.db
-      .collection("campaigns")
-      .orderBy("start")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          campaignsSet.push(doc.id);
-        });
-        if (campaignsSet.length) {
-          setHistoricalCampaigns(campaignsSet);
-          setCampaignName(campaignsSet[campaignsSet.length - 1]);
-        } else {
-          setHistoricalCampaigns(["base-campaign"]);
-          setCampaignName("base-campaign");
-        }
-      })
-
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
+  async function getCampaigns() {
+    const campaigns = await getCampaignsFromDb();
+    if (campaigns.length) {
+      setHistoricalCampaigns(campaigns);
+      setCampaignName(campaigns[campaigns.length - 1]);
+    } else {
+      setHistoricalCampaigns(["base-campaign"]);
+      setCampaignName("base-campaign");
+    }
   }
   function setCampaign() {
     firebase.db
@@ -130,9 +103,9 @@ function Admin(props) {
         <div>Historical Canpaigns</div>
         <ul>
           {historicalCampaigns.length &&
-            historicalCampaigns
-              .reverse()
-              .map((campaign) => <li key={campaign}>{campaign}</li>)}
+            historicalCampaigns.map((campaign) => (
+              <li key={campaign}>{campaign}</li>
+            ))}
         </ul>
       </div>
     </div>

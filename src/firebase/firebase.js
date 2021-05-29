@@ -29,6 +29,22 @@ class Firebase {
   userIdToken() {
     return this.auth.currentUser.getIdToken(true);
   }
+  async userIsAdmin(uuid) {
+    let isAdmin = false;
+    const currentUserUid = await this.getUserUid();
+    const docRef = await this.db
+      .collection("administrators")
+      .doc(currentUserUid);
+    docRef
+      .get()
+      .then((doc) => {
+        isAdmin = doc.data()?.isAdmin;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return isAdmin;
+  }
 
   async signInWithEmailAndPass(email, password) {
     return await this.auth

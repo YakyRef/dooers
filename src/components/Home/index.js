@@ -1,7 +1,8 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
-import { logSuccessToDb } from "./helpers";
+import { getCampaignsFromDb, logSuccessToDb } from "../../firebase/helpers";
 import "./style.scss";
+
 function Home(props) {
   const [errors, setErrors] = useState([]);
   const [files, setFiles] = useState([]);
@@ -14,7 +15,7 @@ function Home(props) {
 
   useEffect(() => {
     if (user) {
-      getCampaignsFromDb();
+      getCampaigns();
     }
   }, [user]);
 
@@ -67,24 +68,13 @@ function Home(props) {
     setFiles([]);
     setUploadCompleted(true);
   };
-  function getCampaignsFromDb() {
-    let campaignsSet = [];
-    firebase.db
-      .collection("campaigns")
-      .orderBy("start")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          campaignsSet.push(doc.id);
-        });
-        campaignsSet.length
-          ? updateCampaigns(campaignsSet)
-          : updateCampaigns(["base-campaign"]);
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
+  async function getCampaigns() {
+    const campaigns = await getCampaignsFromDb();
+    campaigns.length
+      ? updateCampaigns(campaigns)
+      : updateCampaigns(["base-campaign"]);
   }
+
   return user ? (
     <div className="home">
       <h3>Upload files</h3>
