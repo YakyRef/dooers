@@ -21,6 +21,7 @@ function Home(props) {
 
   const onFileChange = (e) => {
     setErrors([]);
+    setFiles([]);
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];
       if (newFile.size > 4000000) {
