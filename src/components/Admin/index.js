@@ -5,7 +5,7 @@ function Admin(props) {
   const [admin, setAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [campaign, setCampaignName] = useState("");
-  const [campaigns, updateCampaigns] = useState([]);
+  const [historicalCampaigns, setHistoricalCampaigns] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState({});
   const { user } = useContext(FirebaseContext);
 
@@ -72,7 +72,7 @@ function Admin(props) {
         querySnapshot.forEach((doc) => {
           campaignsSet.push(doc.id);
         });
-        updateCampaigns(campaignsSet);
+        setHistoricalCampaigns(campaignsSet);
       })
       .then(() => {
         setCampaignName(campaignsSet[campaignsSet.length - 1]);
@@ -89,6 +89,7 @@ function Admin(props) {
         start: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
+        setHistoricalCampaigns((prevState) => [...prevState, campaign]);
         alert("Campaign was set");
       })
       .catch((error) => {
@@ -96,30 +97,40 @@ function Admin(props) {
       });
   }
   return user && admin ? (
-    <div>
-      <br />
-      <input
-        name="username"
-        value={email}
-        onChange={handleEmailChange}
-        placeholder="Please enter dooer email"
-      />
-      &nbsp;&nbsp;
-      <button onClick={inviteUsers}>Send email invitation</button>
-      {Object.keys(invitedUsers).length
-        ? Object.keys(invitedUsers).map((user) => <div key={user}>{user}</div>)
-        : null}
-      <br />
-      <br />
-      <label htmlFor="campaign">Current campaign name: </label>
-      <input
-        name="campaign"
-        value={campaign}
-        onChange={handleCampaignChange}
-        placeholder="Canpain name"
-      />
-      &nbsp;&nbsp;
-      <button onClick={setCampaign}>Update</button>
+    <div className="admin">
+      <div className="invite">
+        <input
+          name="username"
+          value={email}
+          onChange={handleEmailChange}
+          placeholder="Please enter dooer email"
+        />
+        &nbsp;&nbsp;
+        <button onClick={inviteUsers}>Send email invitation</button>
+        {Object.keys(invitedUsers).length
+          ? Object.keys(invitedUsers).map((user) => (
+              <div key={user}>{user}</div>
+            ))
+          : null}
+      </div>
+      <div className="campaigns">
+        <label htmlFor="campaign">Current campaign name: </label>
+        <input
+          name="campaign"
+          value={campaign}
+          onChange={handleCampaignChange}
+          placeholder="Canpain name"
+        />
+        &nbsp;&nbsp;
+        <button onClick={setCampaign}>Update</button>
+        <div>Historical Canpaigns</div>
+        <ul>
+          {historicalCampaigns.length &&
+            historicalCampaigns
+              .reverse()
+              .map((campaign) => <li key={campaign}>{campaign}</li>)}
+        </ul>
+      </div>
     </div>
   ) : (
     <div>
