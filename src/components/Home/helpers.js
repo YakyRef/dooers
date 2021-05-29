@@ -1,6 +1,6 @@
 import firebase from "../../firebase";
 
-export const logSuccessToDb = async (userEmail, files) => {
+export const logSuccessToDb = async (userEmail, files, campaign) => {
   const fileNames = files.map((file) => file.name);
   const currentUploadDate = firebase.firestore.Timestamp.fromDate(new Date());
 
@@ -9,7 +9,7 @@ export const logSuccessToDb = async (userEmail, files) => {
     .doc(userEmail)
     .set(
       {
-        [currentUploadDate]: fileNames,
+        [currentUploadDate]: { campaign, files: fileNames },
       },
       { merge: true }
     )

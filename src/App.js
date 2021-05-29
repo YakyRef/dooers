@@ -15,7 +15,7 @@ function App() {
     <Router>
       <FirebaseContext.Provider value={{ user, firebase }}>
         <div className="App">
-          {user && <NavBar logout={firebase.logout} user={user} />}
+          {user && <NavBar logout={() => firebase.logout()} user={user} />}
           <Switch>
             <Route path="/finishSignUp" component={FinishSignUp} />
             <Route path="/sorry" component={Sorry} />

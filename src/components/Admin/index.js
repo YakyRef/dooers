@@ -72,11 +72,15 @@ function Admin(props) {
         querySnapshot.forEach((doc) => {
           campaignsSet.push(doc.id);
         });
-        setHistoricalCampaigns(campaignsSet);
+        if (campaignsSet.length) {
+          setHistoricalCampaigns(campaignsSet);
+          setCampaignName(campaignsSet[campaignsSet.length - 1]);
+        } else {
+          setHistoricalCampaigns(["base-campaign"]);
+          setCampaignName("base-campaign");
+        }
       })
-      .then(() => {
-        setCampaignName(campaignsSet[campaignsSet.length - 1]);
-      })
+
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });

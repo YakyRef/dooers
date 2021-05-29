@@ -38,10 +38,7 @@ function Home(props) {
     const promises = [];
     files.forEach((file) => {
       const uploadTask = firebase
-        .createStorageFileReference(
-          campaigns.length ? campaigns[campaigns.length - 1] : "base-campaign",
-          file.name
-        )
+        .createStorageFileReference(campaigns[campaigns.length - 1], file.name)
         .put(file);
       promises.push(uploadTask);
       uploadTask.on("state_change", updateProgress, onUploadProgressError);
@@ -62,7 +59,11 @@ function Home(props) {
     setErrors([error]);
   };
   const onUploadFilesComplete = () => {
-    logSuccessToDb(user.email || "unknown", files);
+    logSuccessToDb(
+      user.email || "unknown",
+      files,
+      campaigns[campaigns.length - 1]
+    );
     setFiles([]);
     setUploadCompleted(true);
   };
@@ -76,7 +77,9 @@ function Home(props) {
         querySnapshot.forEach((doc) => {
           campaignsSet.push(doc.id);
         });
-        updateCampaigns(campaignsSet);
+        campaignsSet.length
+          ? updateCampaigns(campaignsSet)
+          : updateCampaigns(["base-campaign"]);
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
