@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import firebase, { FirebaseContext } from "../../firebase/";
 import { getCampaignsFromDb } from "../../firebase/helpers";
+import "./style.scss";
 
 function Admin(props) {
   const [admin, setAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [campaign, setCampaignName] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUserFiles, setSelectedUserFiles] = useState({});
   const [historicalCampaigns, setHistoricalCampaigns] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState({});
   const { user } = useContext(FirebaseContext);
@@ -75,7 +78,8 @@ function Admin(props) {
   }
   return user && admin ? (
     <div className="admin">
-      <div className="invite">
+      {/* Invite users */}
+      <div className="admin__invite">
         <input
           name="username"
           value={email}
@@ -90,7 +94,8 @@ function Admin(props) {
             ))
           : null}
       </div>
-      <div className="campaigns">
+      {/* Set campaign */}
+      <div className="admin__campaigns">
         <label htmlFor="campaign">Current campaign name: </label>
         <input
           name="campaign"
@@ -108,6 +113,8 @@ function Admin(props) {
             ))}
         </ul>
       </div>
+      {/* Download files */}
+      <div className="admin__download"></div>
     </div>
   ) : (
     <div>

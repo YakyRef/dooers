@@ -40,7 +40,10 @@ function Home(props) {
     const promises = [];
     files.forEach((file) => {
       const uploadTask = firebase
-        .createStorageFileReference(campaigns[campaigns.length - 1], file.name)
+        .createStorageFileReference(
+          `${campaigns[campaigns.length - 1]}/${user.uid}`,
+          file.name
+        )
         .put(file);
       promises.push(uploadTask);
       uploadTask.on("state_change", updateProgress, onUploadProgressError);
