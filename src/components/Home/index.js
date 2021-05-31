@@ -24,9 +24,9 @@ function Home(props) {
     setFiles([]);
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];
-      if (newFile.size > 4000000) {
+      if (newFile.size > 5000000) {
         setErrors([
-          `the size of the image: '${newFile.name}' is more than the maximum. the maximum file size is 4mb`,
+          `the size of the image: '${newFile.name}' is more than the maximum. the maximum file size is 5mb`,
         ]);
       } else {
         newFile["id"] = Math.random();

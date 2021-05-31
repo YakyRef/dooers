@@ -7,25 +7,35 @@ function Admin(props) {
   const [admin, setAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [campaign, setCampaignName] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedUserFiles, setSelectedUserFiles] = useState({});
   const [historicalCampaigns, setHistoricalCampaigns] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState({});
   const { user } = useContext(FirebaseContext);
 
   useEffect(() => {
     if (user) {
-      const isAdmin = firebase.userIsAdmin();
-      if (isAdmin) {
-        setAdmin(true);
-      } else {
-        logOut();
-      }
-    }
-    if (admin) {
-      getCampaigns();
+      adminCheck();
     }
   }, [user, admin]);
+
+  const adminCheck = async () => {
+    if (admin) {
+      getCampaigns();
+      return;
+    }
+    const currentUserUid = await firebase.getUserUid();
+    const docRef = await firebase.db
+      .collection("administrators")
+      .doc(currentUserUid);
+    docRef
+      .get()
+      .then((doc) => {
+        const isAdmin = doc.data()?.isAdmin || false;
+        setAdmin(isAdmin);
+      })
+      .catch((error) => {
+        logOut();
+      });
+  };
 
   function inviteUsers() {
     firebase
@@ -141,13 +151,13 @@ function Admin(props) {
             if it is the first time using, please choose "outstand-337" project
           </li>
           <li>
-            Run the following command :
-            "gs://outstand-337bc.appspot.com/(CAMPAIGN-NAME) ."
+            Run the following command : "gsutil -m cp -R
+            gs://outstand-337bc.appspot.com/(CAMPAIGN-NAME) ."
           </li>
           <li>
             If you want to download specific user images from campaign, Run the
-            following command :
-            "gs://outstand-337bc.appspot.com/(CAMPAIGN-NAME)/(User-Email) ."
+            following command : "gsutil -m cp -R
+            gs://outstand-337bc.appspot.com/(CAMPAIGN-NAME)/(User-Email) ."
           </li>
           <li>than run from terminal : "explorer ."</li>
         </ol>
