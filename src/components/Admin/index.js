@@ -114,7 +114,44 @@ function Admin(props) {
         </ul>
       </div>
       {/* Download files */}
-      <div className="admin__download"></div>
+      <div className="admin__download">
+        <h5>Download images instruction</h5>
+        <ol>
+          <li>
+            install{" "}
+            <a
+              target="blank"
+              href="https://cloud.google.com/storage/docs/gsutil_install#windows"
+            >
+              gsutil
+            </a>
+            , for windows (direct installer :{" "}
+            <a
+              href="https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe"
+              target="blank"
+            >
+              Cloud SDK installer
+            </a>
+            )
+          </li>
+          <li>
+            After the installation finish, open the "Google cloud SDK shell"
+          </li>
+          <li>
+            if it is the first time using, please choose "outstand-337" project
+          </li>
+          <li>
+            Run the following command :
+            "gs://outstand-337bc.appspot.com/(CAMPAIGN-NAME) ."
+          </li>
+          <li>
+            If you want to download specific user images from campaign, Run the
+            following command :
+            "gs://outstand-337bc.appspot.com/(CAMPAIGN-NAME)/(User-Email) ."
+          </li>
+          <li>than run from terminal : "explorer ."</li>
+        </ol>
+      </div>
     </div>
   ) : (
     <div>

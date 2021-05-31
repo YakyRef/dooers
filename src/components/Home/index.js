@@ -41,7 +41,7 @@ function Home(props) {
     files.forEach((file) => {
       const uploadTask = firebase
         .createStorageFileReference(
-          `${campaigns[campaigns.length - 1]}/${user.uid}`,
+          `${campaigns[campaigns.length - 1]}/${user.email}`,
           file.name
         )
         .put(file);
