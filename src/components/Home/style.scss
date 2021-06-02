@@ -8,13 +8,12 @@
   flex-direction: column;
   display: flex;
   text-align: left;
-  #uploader {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 50%;
-  }
   #fileButton {
     opacity: 0;
+  }
+  .uploadBtn {
+    background-color: rgb(0, 228, 114);
+    color: "#fff";
   }
   &__error {
     color: red;
