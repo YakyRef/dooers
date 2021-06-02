@@ -60,7 +60,9 @@ function Home(props) {
       })
       .catch((err) => {
         console.log(err.code);
-        firebase.analytics.logEvent(`Error - Files uploaded :  ${err.code}`);
+        firebase.analytics.logEvent("Error - Files uploaded", {
+          error: err.code,
+        });
       });
   };
 
@@ -79,11 +81,11 @@ function Home(props) {
       files,
       campaigns[campaigns.length - 1]
     );
-    firebase.analytics.logEvent(
-      `Files uploaded :  ${user.email || "unknown"}, ${files.map(
-        (file) => file.name
-      )}, ${campaigns[campaigns.length - 1]} `
-    );
+    firebase.analytics.logEvent("Files uploaded", {
+      user: user.email || "unknown",
+      files: files.length,
+      campaign: campaigns[campaigns.length - 1],
+    });
     setFiles([]);
     setUploadCompleted(true);
     setUploading(false);

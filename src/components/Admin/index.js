@@ -1,3 +1,5 @@
+import { Button, Divider, Typography, Input, Tag, List } from "antd";
+import { UserOutlined, CheckOutlined } from "@ant-design/icons";
 import React, { useContext, useEffect, useState } from "react";
 import firebase, { FirebaseContext } from "../../firebase/";
 import { getCampaignsFromDb } from "../../firebase/helpers";
@@ -89,40 +91,74 @@ function Admin(props) {
   return user && admin ? (
     <div className="admin">
       {/* Invite users */}
+      <Typography.Title level={4}>Send Invitation to user :</Typography.Title>
       <div className="admin__invite">
-        <input
+        <Input
           name="username"
+          className="username"
           value={email}
           onChange={handleEmailChange}
           placeholder="Please enter dooer email"
+          size="large"
+          prefix={<UserOutlined />}
         />
         &nbsp;&nbsp;
-        <button onClick={inviteUsers}>Send email invitation</button>
-        {Object.keys(invitedUsers).length
-          ? Object.keys(invitedUsers).map((user) => (
-              <div key={user}>{user}</div>
-            ))
-          : null}
+        <Button type="primary" size="large" onClick={inviteUsers}>
+          Send email invitation
+        </Button>
       </div>
+
+      {Object.keys(invitedUsers).length
+        ? Object.keys(invitedUsers).map((user) => (
+            <Tag key={user} color="gold">
+              <CheckOutlined />
+              &nbsp;&nbsp;
+              {user}
+            </Tag>
+          ))
+        : null}
+      <Divider />
       {/* Set campaign */}
+      <br />
+      <Typography.Title level={4}>Campaigns settings:</Typography.Title>
       <div className="admin__campaigns">
-        <label htmlFor="campaign">Current campaign name: </label>
-        <input
+        <label htmlFor="campaign">Set new campaign name: </label>
+        <Input
           name="campaign"
+          className="campaign"
+          type="text"
+          size="large"
           value={campaign}
           onChange={handleCampaignChange}
           placeholder="Canpain name"
         />
         &nbsp;&nbsp;
-        <button onClick={setCampaign}>Update</button>
-        <div>Historical Canpaigns</div>
-        <ul>
-          {historicalCampaigns.length &&
-            historicalCampaigns.map((campaign) => (
-              <li key={campaign}>{campaign}</li>
-            ))}
-        </ul>
+        <Button onClick={setCampaign} type="primary" size="large">
+          Update
+        </Button>
       </div>
+      {historicalCampaigns.length ? (
+        <List
+          style={{ width: "50%" }}
+          size="small"
+          header={
+            <div
+              style={{
+                color: "#262626",
+                background: "#ffd6e7",
+                borderColor: "#ffe58f",
+              }}
+            >
+              Historical Canpaigns
+            </div>
+          }
+          bordered
+          dataSource={historicalCampaigns}
+          renderItem={(item) => <List.Item>{item}</List.Item>}
+        />
+      ) : null}
+
+      <Divider />
       {/* Download files */}
       <div className="admin__download">
         <h5>Download images instruction</h5>
@@ -165,7 +201,14 @@ function Admin(props) {
     </div>
   ) : (
     <div>
-      <button onClick={providerLogInHandler}>Log In</button>
+      <Button
+        className="admin__log-in-btn"
+        type="primary"
+        size="large"
+        onClick={providerLogInHandler}
+      >
+        Log In
+      </Button>
     </div>
   );
 }

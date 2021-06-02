@@ -4,14 +4,30 @@
   text-align: left;
   &__invite {
     margin: 30px 0;
+    display: flex;
+    .username {
+      width: 50%;
+    }
   }
   &__campaigns {
-    margin-bottom: 30px;
+    margin: 30px 0;
+    display: flex;
+    align-items: center;
+    .campaign {
+      width: 40%;
+    }
+    > label {
+      margin-right: 15px;
+    }
   }
   &__download {
     padding: 5px;
     margin-bottom: 30px;
     border: 1px solid pink;
     border-radius: 5px;
+  }
+  &__log-in-btn {
+    margin-top: 10vh;
+    width: 30vw;
   }
 }
