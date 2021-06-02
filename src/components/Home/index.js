@@ -25,6 +25,7 @@ function Home(props) {
   const onFileChange = (e) => {
     setErrors([]);
     setFiles([]);
+    setUploadProgress(0);
     setUploadCompleted(false);
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];

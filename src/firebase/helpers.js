@@ -31,7 +31,7 @@ export const logSuccessToDb = async (userEmail, files, campaign) => {
       { merge: true }
     )
     .then(() => {
-      console.log("log success to Db");
+      // console.log("log success to Db");
     })
     .catch((error) => {
       console.error("Error writing document: ", error);
