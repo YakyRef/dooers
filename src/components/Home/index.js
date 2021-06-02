@@ -1,8 +1,8 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
 import { getCampaignsFromDb, logSuccessToDb } from "../../firebase/helpers";
-import { Button, Divider, Alert, Progress, Typography } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Button, Divider, Alert, Progress, Typography, Tag } from "antd";
+import { UploadOutlined, CheckOutlined } from "@ant-design/icons";
 import "./style.scss";
 
 function Home(props) {
@@ -140,7 +140,13 @@ function Home(props) {
       />
 
       {files.length
-        ? files.map((file) => <li key={file.name}>{file.name}</li>)
+        ? files.map((file) => (
+            <Tag key={file.name} color="cyan" className="file-tag">
+              <CheckOutlined />
+              &nbsp;&nbsp;
+              {file.name}
+            </Tag>
+          ))
         : null}
 
       {errors.length

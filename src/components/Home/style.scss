@@ -1,10 +1,9 @@
 .home {
   min-height: 100%;
   width: 100%;
-  max-width: 500px;
+  max-width: 90vw;
   padding: 0;
-  margin: 10% auto 0 auto;
-  justify-content: center;
+  margin: 5vh auto 0 auto;
   flex-direction: column;
   display: flex;
   text-align: left;
@@ -17,5 +16,8 @@
   }
   &__error {
     color: red;
+  }
+  .file-tag {
+    margin-bottom: 1vh;
   }
 }
