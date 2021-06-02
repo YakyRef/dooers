@@ -25,6 +25,7 @@ function Home(props) {
   const onFileChange = (e) => {
     setErrors([]);
     setFiles([]);
+    setUploadCompleted(false);
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];
       if (newFile.size > 5000000) {
@@ -98,12 +99,6 @@ function Home(props) {
         0%
       </progress>
 
-      {errors.length &&
-        errors.map((error, i) => (
-          <div key={i} className="home__error">
-            {error}
-          </div>
-        ))}
       <Divider />
 
       <Button
@@ -131,9 +126,19 @@ function Home(props) {
       {uploadCompleted && !errors.length && (
         <Alert message="Upload Completed" type="success" showIcon />
       )}
+      {errors.length
+        ? errors.map((error, i) => (
+            <Alert key={i} message={error} type="error" showIcon />
+          ))
+        : null}
       <Divider />
       <Button
-        type="primary"
+        style={{
+          backgroundColor: "green",
+          color: "#fff",
+        }}
+        size="large"
+        type="text"
         onClick={onUploadClick}
         disabled={errors.length || files.length < 1}
       >
