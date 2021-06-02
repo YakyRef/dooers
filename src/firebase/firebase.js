@@ -2,6 +2,7 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/analytics";
 import firebaseConfig from "./config";
 
 class Firebase {
@@ -13,6 +14,7 @@ class Firebase {
     this.storage = app.storage();
     this.db = app.firestore();
     this.firestore = app.firestore;
+    this.analytics = app.analytics();
   }
   // Auth methods.
   async isSignedIn() {

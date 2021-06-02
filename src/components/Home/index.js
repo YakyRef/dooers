@@ -53,7 +53,10 @@ function Home(props) {
         alert("All files uploaded");
         onUploadFilesComplete();
       })
-      .catch((err) => console.log(err.code));
+      .catch((err) => {
+        console.log(err.code);
+        firebase.analytics.logEvent(`Error - Files uploaded :  ${err.code}`);
+      });
   };
 
   const updateProgress = (snapshot) => {
@@ -68,6 +71,11 @@ function Home(props) {
       user.email || "unknown",
       files,
       campaigns[campaigns.length - 1]
+    );
+    firebase.analytics.logEvent(
+      `Files uploaded :  ${user.email || "unknown"}, ${files}, ${
+        campaigns[campaigns.length - 1]
+      } `
     );
     setFiles([]);
     setUploadCompleted(true);
