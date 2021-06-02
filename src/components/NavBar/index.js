@@ -1,10 +1,16 @@
+import { PageHeader, Button } from "antd";
 import React from "react";
 
 export default function NavBar({ logout, user }) {
   return (
-    <div>
-      <button onClick={() => logout()}>Log Out</button>
-      <span>Hello {user.displayname || user.email}</span>
-    </div>
+    <PageHeader
+      className="site-page-header-responsive"
+      subTitle={`Hello ${user.displayname || user.email}`}
+      extra={[
+        <Button key="1" onClick={() => logout()}>
+          Log Out
+        </Button>,
+      ]}
+    />
   );
 }
