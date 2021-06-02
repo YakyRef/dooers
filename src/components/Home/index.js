@@ -80,9 +80,9 @@ function Home(props) {
       campaigns[campaigns.length - 1]
     );
     firebase.analytics.logEvent(
-      `Files uploaded :  ${user.email || "unknown"}, ${files}, ${
-        campaigns[campaigns.length - 1]
-      } `
+      `Files uploaded :  ${user.email || "unknown"}, ${files.map(
+        (file) => file.name
+      )}, ${campaigns[campaigns.length - 1]} `
     );
     setFiles([]);
     setUploadCompleted(true);
