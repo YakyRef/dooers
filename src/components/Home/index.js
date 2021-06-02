@@ -1,11 +1,14 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
 import { getCampaignsFromDb, logSuccessToDb } from "../../firebase/helpers";
+import { Button, Divider, Alert } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import "./style.scss";
 
 function Home(props) {
   const [errors, setErrors] = useState([]);
   const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
   const [campaigns, updateCampaigns] = useState([]);
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const { user, firebase } = useContext(FirebaseContext);
@@ -37,6 +40,7 @@ function Home(props) {
 
   const onUploadClick = (e) => {
     e.preventDefault(); // prevent page refreshing
+    setUploading(true);
     const promises = [];
     files.forEach((file) => {
       const uploadTask = firebase
@@ -50,7 +54,6 @@ function Home(props) {
     });
     Promise.all(promises)
       .then((res) => {
-        alert("All files uploaded");
         onUploadFilesComplete();
       })
       .catch((err) => {
@@ -79,6 +82,7 @@ function Home(props) {
     );
     setFiles([]);
     setUploadCompleted(true);
+    setUploading(false);
   };
   async function getCampaigns() {
     const campaigns = await getCampaignsFromDb();
@@ -100,26 +104,41 @@ function Home(props) {
             {error}
           </div>
         ))}
+      <Divider />
+
+      <Button
+        type="primary"
+        icon={<UploadOutlined />}
+        loading={uploading}
+        size="large"
+      >
+        <label for="fileButton"> Choose images to upload (PNG, JPG)</label>
+      </Button>
+      <input
+        id="fileButton"
+        name="fileButton"
+        ref={fileButtonEl}
+        type="file"
+        multiple
+        onChange={onFileChange}
+        placeholder="sasd"
+      />
+
+      {files.length
+        ? files.map((file) => <li key={file.name}>{file.name}</li>)
+        : null}
 
       {uploadCompleted && !errors.length && (
-        <div className="home__completed">Upload Completed</div>
+        <Alert message="Upload Completed" type="success" showIcon />
       )}
-      <label>
-        <input
-          id="fileButton"
-          ref={fileButtonEl}
-          type="file"
-          multiple
-          onChange={onFileChange}
-        />
-      </label>
-      <br />
-      <button
+      <Divider />
+      <Button
+        type="primary"
         onClick={onUploadClick}
         disabled={errors.length || files.length < 1}
       >
         Upload
-      </button>
+      </Button>
     </div>
   ) : (
     <div>sorry</div>
