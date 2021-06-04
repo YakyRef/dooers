@@ -1,7 +1,16 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
 import { getCampaignsFromDb, logSuccessToDb } from "../../firebase/helpers";
-import { Button, Divider, Alert, Progress, Typography, Tag } from "antd";
+import {
+  Button,
+  Divider,
+  Alert,
+  Progress,
+  Typography,
+  Tag,
+  Spin,
+  Space,
+} from "antd";
 import { UploadOutlined, CheckOutlined } from "@ant-design/icons";
 import "./style.scss";
 
@@ -82,9 +91,7 @@ function Home(props) {
       campaigns[campaigns.length - 1]
     );
     firebase.analytics.logEvent("Files uploaded", {
-      user: user.email || "unknown",
-      files: files.length,
-      campaign: campaigns[campaigns.length - 1],
+      name: user.email || "unknown",
     });
     setFiles([]);
     setUploadCompleted(true);
@@ -168,7 +175,9 @@ function Home(props) {
       </Button>
     </div>
   ) : (
-    <div>sorry</div>
+    <Space size="middle" align="center">
+      <Spin size="large" />
+    </Space>
   );
 }
 export default Home;

@@ -83,7 +83,10 @@ class Firebase {
           console.log("res", result);
           window.localStorage.removeItem("emailForSignIn");
           if (result.user) {
-            window.location.href = "/";
+            // window.location.href = "/";
+            setTimeout(function () {
+              document.location.href = "/";
+            }, 250);
           }
         })
         .catch((error) => {
