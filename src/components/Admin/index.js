@@ -49,7 +49,7 @@ function Admin(props) {
   }
 
   function handleEmailChange(e) {
-    setEmail(e.target.value);
+    setEmail(e.target.value.toLowerCase());
   }
   function providerLogInHandler() {
     firebase.signInWithGoogle().catch((error) => {

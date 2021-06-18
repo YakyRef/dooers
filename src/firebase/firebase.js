@@ -75,7 +75,9 @@ class Firebase {
     if (this.auth.isSignInWithEmailLink(window.location.href)) {
       let email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
-        email = window.prompt("Please provide your email for confirmation");
+        email = window
+          .prompt("Please provide your email for confirmation")
+          .toLowerCase();
       }
       this.auth
         .signInWithEmailLink(email, window.location.href)

@@ -1,5 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { FirebaseContext } from "../../firebase";
+// import { getImageGPS } from "../../helpers/image-helpers";
+import exifr from "exifr";
 import { getCampaignsFromDb, logSuccessToDb } from "../../firebase/helpers";
 import {
   Button,
@@ -38,13 +40,35 @@ function Home(props) {
     setUploadCompleted(false);
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];
+      // File size validation:
       if (newFile.size > 5000000) {
-        setErrors([
+        setErrors((prevState) => [
+          ...prevState,
           `the size of the image: '${newFile.name}' is more than the maximum. the maximum file size is 5mb`,
         ]);
       } else {
         newFile["id"] = Math.random();
-        setFiles((prevState) => [...prevState, newFile]);
+        // GPS meta data validation:
+        exifr.parse(newFile).then((output) => {
+          if (output && output.latitude && output.longitude) {
+            newFile["coordinates"] = [output.latitude, output.longitude];
+            // push file to files state
+            setFiles((prevState) => [...prevState, newFile]);
+          } else {
+            setErrors((prevState) => [
+              ...prevState,
+              <p>
+                There is no GPS data inside : '{newFile.name}'.
+                <br /> (see how to enable this on{" "}
+                <a href="https://support.apple.com/en-il/HT207092">ios</a> or
+                <a href="https://support.google.com/accounts/answer/3467281">
+                  android
+                </a>
+                )
+              </p>,
+            ]);
+          }
+        });
       }
     }
   };
@@ -160,7 +184,13 @@ function Home(props) {
 
       {errors.length
         ? errors.map((error, i) => (
-            <Alert key={i} message={error} type="error" showIcon />
+            <Alert
+              key={i}
+              message={error}
+              type="error"
+              showIcon
+              style={{ marginBottom: "1vh" }}
+            />
           ))
         : null}
       <Divider />

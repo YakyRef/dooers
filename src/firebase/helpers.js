@@ -18,7 +18,9 @@ export const getCampaignsFromDb = async () => {
 };
 
 export const logSuccessToDb = async (userEmail, files, campaign) => {
-  const fileNames = files.map((file) => file.name);
+  const filesToDb = files.map((file) => {
+    return { name: file.name, coordinates: file.coordinates };
+  });
   const currentUploadDate = firebase.firestore.Timestamp.fromDate(new Date());
 
   await firebase.db
@@ -26,7 +28,7 @@ export const logSuccessToDb = async (userEmail, files, campaign) => {
     .doc(userEmail)
     .set(
       {
-        [currentUploadDate]: { campaign, files: fileNames },
+        [currentUploadDate]: { campaign, images: filesToDb },
       },
       { merge: true }
     )
