@@ -41,7 +41,7 @@ function Home(props) {
     for (let i = 0; i < e.target.files.length; i++) {
       const newFile = e.target.files[i];
       // File size validation:
-      if (newFile.size > 5000000) {
+      if (newFile.size > 10000000) {
         setErrors((prevState) => [
           ...prevState,
           `the size of the image: '${newFile.name}' is more than the maximum. the maximum file size is 5mb`,
